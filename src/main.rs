@@ -1,5 +1,7 @@
 extern crate sdl2;
 
+use std::time::Duration;
+
 use sdl2::video::Window;
 use sdl2::render::Canvas;
 use sdl2::pixels::Color;
@@ -45,8 +47,10 @@ fn main() {
                 _ => {}
             }
         }
-    // Game Loop
+        // Game Loop
 
+        canvas.present();
+        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }    
 }
 
