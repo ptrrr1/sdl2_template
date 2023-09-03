@@ -18,6 +18,26 @@ struct WindowSpecs {
     height: u32,
 }
 
+impl WindowSpecs {
+    fn create_window(&self) -> (EventPump, Canvas<Window>) {
+        let sdl_context = sdl2::init().unwrap(); // Initialize
+        let video_subsystem = sdl_context.video().unwrap();
+
+        let window = video_subsystem.window(&self.name, self.width, self.height)
+            .position_centered() // Create the Window Centered relative to screen size
+            .build()
+            .unwrap();
+
+        let canvas : Canvas<Window> = window.into_canvas()
+            .present_vsync() // Can't render faster than display rate
+            .build().unwrap();    
+
+        let event_pump = sdl_context.event_pump().unwrap();
+
+        return (event_pump, canvas)
+    }
+}
+
 impl Default for WindowSpecs {
     fn default() -> WindowSpecs {
         WindowSpecs {
@@ -29,10 +49,10 @@ impl Default for WindowSpecs {
 }
 
 fn main() {
-    let window_specs: WindowSpecs = Default::default();
+    let window: WindowSpecs = Default::default();
 
     // Type Tuple (EventPump, Canvas<Window>)
-    let (mut event_pump, mut canvas) = create_window(window_specs.name, window_specs.width, window_specs.height);
+    let (mut event_pump, mut canvas) = window.create_window();
 
     'running: loop {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
@@ -52,23 +72,4 @@ fn main() {
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }    
-}
-
-#[allow(unused_mut)]
-fn create_window(win_name: String, win_width: u32, win_height: u32) -> (EventPump, Canvas<Window>) {
-    let sdl_context = sdl2::init().unwrap(); // Initialize
-    let video_subsystem = sdl_context.video().unwrap();
-
-    let window = video_subsystem.window(&win_name, win_width, win_height)
-        .position_centered()
-        .build()
-        .unwrap();
-
-    let mut canvas : Canvas<Window> = window.into_canvas()
-        .present_vsync() // Can't render faster than display rate
-        .build().unwrap();    
-
-    let mut event_pump = sdl_context.event_pump().unwrap();
-
-    return (event_pump, canvas)
 }
