@@ -2,11 +2,11 @@
 pub mod WindowManager {
 	extern crate sdl2;
 
-	use sdl2::video::Window;
-	use sdl2::render::Canvas;
+	use sdl2::video::{Window, WindowContext};
+	use sdl2::render::{Canvas, TextureCreator};
+	use sdl2::image::InitFlag;
 
 	use sdl2::EventPump;
-
 
 	#[derive(Debug)]
 	pub struct WindowBuilder {
@@ -24,9 +24,10 @@ pub mod WindowManager {
 			}
 		}
 
-	    pub fn create_window(&self) -> (EventPump, Canvas<Window>) {
+	    pub fn create_window(&self) -> (EventPump, Canvas<Window>, TextureCreator<WindowContext>) {
 	        let sdl_context = sdl2::init().unwrap(); // Initialize
 	        let video_subsystem = sdl_context.video().unwrap();
+	        let _image_context = sdl2::image::init(InitFlag::PNG | InitFlag::JPG);
 
 	        let window = video_subsystem.window(&self.name, self.width, self.height)
 	            .position_centered() // Create the Window Centered relative to screen size
@@ -39,7 +40,9 @@ pub mod WindowManager {
 
 	        let event_pump = sdl_context.event_pump().unwrap();
 
-	        return (event_pump, canvas)
+	        let texture_creator: TextureCreator<WindowContext> = canvas.texture_creator();
+
+	        return (event_pump, canvas, texture_creator)
 	    }
 	}
 
