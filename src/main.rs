@@ -1,8 +1,8 @@
-
 #[path = "window_manager.rs"] mod window;
 use crate::window::WindowManager::WindowBuilder;
 
 #[path = "process_input.rs"] mod process_input;
+use crate::process_input::ProcessInput;
 
 extern crate sdl2;
 
@@ -29,9 +29,15 @@ fn main() {
                     break 'running
                 },
 
-                Event::KeyDown { keycode: Some(key), .. } => { process_input::key_down(key) },
+                Event::MouseButtonDown { mouse_btn, .. } => { ProcessInput::mouse_down(mouse_btn); },
 
-                Event::KeyUp { keycode: Some(key), .. } => { process_input::key_up(key) }
+                Event::MouseButtonUp { mouse_btn, .. } => { ProcessInput::mouse_up(mouse_btn); },
+
+                Event::MouseWheel { x, y, .. } => { ProcessInput::mouse_wheel(x, y); },
+
+                Event::KeyDown { keycode: Some(key), .. } => { ProcessInput::key_down(key) },
+
+                Event::KeyUp { keycode: Some(key), .. } => { ProcessInput::key_up(key) }
 
                 _ => {}
             }
