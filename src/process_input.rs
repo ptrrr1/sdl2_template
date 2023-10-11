@@ -44,13 +44,13 @@ pub mod ProcessInput {
 
     pub fn key_down(key: Keycode) {
         match key {
-            Keycode::W => { println!("W down") },
+            Keycode::W | Keycode::Up => { println!("W or Arrow Up down") },
 
-            Keycode::A => { println!("A down") },
+            Keycode::A | Keycode::Left => { println!("A or Arrow Left down") },
 
-            Keycode::S => { println!("S down") },
+            Keycode::S | Keycode::Down => { println!("S or Arrow Down down") },
 
-            Keycode::D => { println!("D down") },
+            Keycode::D | Keycode::Right => { println!("D or Arrow Right down") },
             
             _ => (),
         }
@@ -58,13 +58,13 @@ pub mod ProcessInput {
 
     pub fn key_up(key: Keycode) {
         match key {
-            Keycode::W => { println!("W up") },
+            Keycode::W | Keycode::Up => { println!("W or Arrow Up up") },
 
-            Keycode::A => { println!("A up") },
+            Keycode::A | Keycode::Left => { println!("A or Arrow Left up") },
 
-            Keycode::S => { println!("S up") },
+            Keycode::S | Keycode::Down => { println!("S or Arrow Down up") },
 
-            Keycode::D => { println!("D up") },
+            Keycode::D | Keycode::Right => { println!("D or Arrow Right up") },
             
             _ => (),
         }
